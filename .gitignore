@@ -45,3 +45,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Ignore desktop platform directories (not used in this mobile project)
+linux/
+macos/
+web/
