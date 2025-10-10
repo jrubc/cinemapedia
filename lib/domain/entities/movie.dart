@@ -1,3 +1,4 @@
+// This is the object that we gonna use in our application
 class Movie {
   final bool adult;
   final String backdropPath;
