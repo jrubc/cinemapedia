@@ -1,8 +1,9 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:cinemapedia/config/helpers/human_formats.dart';
 import 'package:cinemapedia/domain/entities/movie.dart';
 import 'package:flutter/material.dart';
 
-class MovieHorizontalListview extends StatelessWidget {
+class MovieHorizontalListview extends StatefulWidget {
 
   final List<Movie> movies;
   final String? title;
@@ -18,21 +19,48 @@ class MovieHorizontalListview extends StatelessWidget {
   });
 
   @override
+  State<MovieHorizontalListview> createState() => _MovieHorizontalListviewState();
+}
+
+class _MovieHorizontalListviewState extends State<MovieHorizontalListview> {
+  
+  final scrollController = ScrollController();
+  @override
+  void initState() {
+    super.initState();
+
+    scrollController.addListener((){
+      if(widget.loadNextPage == null) return;
+      if(scrollController.position.pixels + 200 >= scrollController.position.maxScrollExtent){
+        print('Load next movies');
+        widget.loadNextPage!();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 350,
       child: Column(
         children: [
-          if(title != null || subtitle != null)
+          if(widget.title != null || widget.subtitle != null)
             _Title(
-              title: title,
-              subtitle: subtitle
+              title: widget.title,
+              subtitle: widget.subtitle
             ),
           Expanded(
             child: ListView.builder(
-              itemCount: movies.length,
+              controller: scrollController,
+              itemCount: widget.movies.length,
               itemBuilder: (context, index){
-                return _Slide(movie: movies[index]);
+                return _Slide(movie: widget.movies[index]);
               },
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
@@ -51,7 +79,6 @@ class _Slide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textStyles = Theme.of(context).textTheme;
-
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
@@ -92,19 +119,22 @@ class _Slide extends StatelessWidget {
               style: textStyles.titleSmall,
             )
           ),
-          Row(
-            children: [
-              Icon(Icons.star_half_outlined, color: Colors.yellow.shade800),
-              const SizedBox(width: 3),
-              Text(
-                '${movie.voteAverage}',
-                style: textStyles.bodyMedium?.copyWith(
-                  color: Colors.yellow.shade800
-                )
-              ),
-              SizedBox(width: 10),
-              Text('${movie.popularity}', style: textStyles.bodySmall)
-            ]
+          SizedBox(
+            width: 150,
+            child: Row(
+              children: [
+                Icon(Icons.star_half_outlined, color: Colors.yellow.shade800),
+                const SizedBox(width: 3),
+                Text(
+                  '${movie.voteAverage}',
+                  style: textStyles.bodyMedium?.copyWith(
+                    color: Colors.yellow.shade800
+                  )
+                ),
+                Spacer(),
+                Text(HumanFormats.number(movie.popularity), style: textStyles.bodySmall),
+              ]
+            ),
           )
         ],
       ),
@@ -132,9 +162,9 @@ class _Title extends StatelessWidget {
           const Spacer(),
           if(subtitle != null)
             FilledButton.tonal(
+              style: const ButtonStyle(visualDensity: VisualDensity.compact),
               child: Text(subtitle!),
               onPressed: (){},
-              style: const ButtonStyle(visualDensity: VisualDensity.compact)
             ),
         ]
       )

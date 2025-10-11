@@ -21,6 +21,9 @@ class MainApp extends StatelessWidget {
       routerConfig: appRouter,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.getTheme(),
+      supportedLocales: const[
+        Locale('en', 'US')
+      ],
     );
   }
 }

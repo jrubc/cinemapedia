@@ -36,14 +36,59 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   Widget build(BuildContext context) {
     final nowPlayingMovies = ref.watch( nowPlayingMoviesProvider );
     final slideShowMovies = ref.watch( movieSlideshowProvider );
-    return Column(
-      children: [
-        CustomAppbar(),
-        MoviesSlideshow(movies: slideShowMovies),
-        MovieHorizontalListview(
-          movies: nowPlayingMovies,
-          title: 'In theaters',
-          subtitle: 'Monday 20'
+    return CustomScrollView(
+      slivers: [
+        const SliverAppBar(
+          floating: true,
+          flexibleSpace: FlexibleSpaceBar(
+            title: CustomAppbar(),
+            titlePadding: EdgeInsets.zero,
+          ),
+        ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              return Column(
+                children: [
+                  MoviesSlideshow(movies: slideShowMovies),
+                  MovieHorizontalListview(
+                    movies: nowPlayingMovies,
+                    title: 'In theaters',
+                    subtitle: 'Monday 20',
+                    loadNextPage: (){
+                      ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                    },
+                  ),
+                  MovieHorizontalListview(
+                    movies: nowPlayingMovies,
+                    title: 'Soon',
+                    subtitle: 'This month',
+                    loadNextPage: (){
+                      ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                    },
+                  ),
+                  MovieHorizontalListview(
+                    movies: nowPlayingMovies,
+                    title: 'Populars',
+                    subtitle: 'Most viewers',
+                    loadNextPage: (){
+                      ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                    },
+                  ),
+                  MovieHorizontalListview(
+                    movies: nowPlayingMovies,
+                    title: 'Top rated',
+                    subtitle: 'Of all time',
+                    loadNextPage: (){
+                      ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                    },
+                  ),
+                  const SizedBox(height: 50)
+                ]
+              );
+            },
+            childCount: 1
+          )
         )
       ]
     );
