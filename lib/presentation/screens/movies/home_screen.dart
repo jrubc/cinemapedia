@@ -30,12 +30,19 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   void initState() {
     super.initState();
     ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+    ref.read(popularMoviesProvider.notifier).loadNextPage();
+    ref.read(upComingMoviesProvider.notifier).loadNextPage();
+    ref.read(topRatedMoviesProvider.notifier).loadNextPage();
   }
 
   @override
   Widget build(BuildContext context) {
     final nowPlayingMovies = ref.watch( nowPlayingMoviesProvider );
+    final popularMovies = ref.watch(popularMoviesProvider);
+    final upComingMovies = ref.watch( upComingMoviesProvider );
+    final topRatedMovies = ref.watch(topRatedMoviesProvider);
     final slideShowMovies = ref.watch( movieSlideshowProvider );
+
     return CustomScrollView(
       slivers: [
         const SliverAppBar(
@@ -60,27 +67,27 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                     },
                   ),
                   MovieHorizontalListview(
-                    movies: nowPlayingMovies,
+                    movies: upComingMovies,
                     title: 'Soon',
                     subtitle: 'This month',
                     loadNextPage: (){
-                      ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                      ref.read(upComingMoviesProvider.notifier).loadNextPage();
                     },
                   ),
                   MovieHorizontalListview(
-                    movies: nowPlayingMovies,
+                    movies: popularMovies,
                     title: 'Populars',
                     subtitle: 'Most viewers',
                     loadNextPage: (){
-                      ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                      ref.read(popularMoviesProvider.notifier).loadNextPage();
                     },
                   ),
                   MovieHorizontalListview(
-                    movies: nowPlayingMovies,
+                    movies: topRatedMovies,
                     title: 'Top rated',
                     subtitle: 'Of all time',
                     loadNextPage: (){
-                      ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+                      ref.read(topRatedMoviesProvider.notifier).loadNextPage();
                     },
                   ),
                   const SizedBox(height: 50)

@@ -9,4 +9,7 @@ abstract class MoviesRepository{
   // getNowPlaying method fetches a list of movies currently
   // playing, supporing pagination with an optional page parameter.
    Future<List<Movie>>getNowPlaying({int page = 1});
+   Future<List<Movie>>getPopular({int page = 1});
+   Future<List<Movie>>getUpComing({int page = 1});
+   Future<List<Movie>>getTopRated({int page = 1});
 }
