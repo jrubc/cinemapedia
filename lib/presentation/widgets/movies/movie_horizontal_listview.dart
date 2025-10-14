@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia/config/helpers/human_formats.dart';
 import 'package:cinemapedia/domain/entities/movie.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class MovieHorizontalListview extends StatefulWidget {
 
@@ -40,7 +41,6 @@ class _MovieHorizontalListviewState extends State<MovieHorizontalListview> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -78,6 +78,8 @@ class _Slide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //print(movie.popularity);
+    //print(HumanFormats.number(movie.popularity));
     final textStyles = Theme.of(context).textTheme;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8),
@@ -102,8 +104,9 @@ class _Slide extends StatelessWidget {
                       )
                     );
                   }
-                  return FadeIn(
-                    child: child
+                  return GestureDetector(
+                    onTap: () => context.push('/movie/${movie.id}'),
+                    child: FadeIn(child: child)
                   );
                 }
               )
@@ -132,7 +135,7 @@ class _Slide extends StatelessWidget {
                   )
                 ),
                 Spacer(),
-                Text(HumanFormats.number(movie.popularity), style: textStyles.bodySmall),
+                Text(HumanFormats.number(movie.popularity)),
               ]
             ),
           )
