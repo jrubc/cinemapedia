@@ -47,6 +47,8 @@ class MovieDbDatasource extends MoviesDatasource{
 
   @override
   Future<Movie> getMovieById(String id) async {
+    print('🧠 getMovieById called with id: $id');
+
     
     final response = await dio.get(
       '/movie/$id',
