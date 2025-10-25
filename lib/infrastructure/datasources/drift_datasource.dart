@@ -34,6 +34,7 @@ class DriftDatasource extends LocalStorageDatasource {
       ..limit(limit, offset: offset);
     // Run query
     final favoriteMovieRows = await query.get();
+     
     final movies = favoriteMovieRows.map(
       (row) => Movie(
         adult: false,

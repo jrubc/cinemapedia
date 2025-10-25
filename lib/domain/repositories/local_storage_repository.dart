@@ -5,7 +5,7 @@ abstract class LocalStorageRepository {
 
   Future<bool> isFavoriteMovie(int movieId);
 
-  Future<List<Movie>> loadFavoritesMovies({
+  Future<List<Movie>> loadFavoriteMovies({
     int limit = 10,
     int offset = 0
   });
